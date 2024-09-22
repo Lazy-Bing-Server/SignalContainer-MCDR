@@ -1,0 +1,51 @@
+signal_container:
+  help:
+    detailed: |
+      ------ {id} v{ver} ------
+      Obtain container that output specified signal
+      §7{pre}§r Show this help message
+      §7{pre} get§e <signal>§r Get specified container
+      §7{pre} give§6 <player>§e <signal>§r Give some specified container
+      §7{pre} cfg list§r List config items
+      §7{pre} cfg info §b<key> §rGet config item info
+      §7{pre} cfg set §b<key> §4<value>§r Set config items for yourself
+      §7{pre} cfg set-global §b<key> §4<value>§r Set config items globally
+    mcdr: Obtain container that output specified signal
+    suggest: Click to fill command §7{}§r
+
+  error:
+    requires_positive: Signal must be a positive value
+    not_a_player: This command can only be executed by player
+    perm_denied: Permission denied
+
+  get:
+    obtained: Specified container (signal=§e{signal}§r) given to {player}
+
+  set:
+    local: Set preference item §b{k}§r to §4{v}§r
+    global: Set global config item §b{k}§r to §4{v}§r
+    failed: Set item §b{k}§r to §4{v}§c failed
+
+  list: "Available configuration items:"
+
+  info:
+    edit_local_hover: Edit personal preference item {k}
+    edit_global_hover: Edit global config item {k}
+    local_value: "Prefered config value: §4{}§r [✎]"
+    global_value: "Global config value: §4{}§r [✎]"
+
+    container_item:
+      name: Container item ID
+      desc: Specify the container item that will given to the player
+    max_slots:
+      name: Maximum slots
+      desc: Specify the slots the specified container have
+    allow_overstack_under_15:
+      name: Allow overstack item under signal levl 15
+      desc: Enable this to make container filled with overstacked unstackable items in any situation
+    unstackable_fillings:
+      name: Unstackable fillings
+      desc: Specify the unstackable item that will fill in the container
+    stackable_fillings:
+      name: Stackable fillings
+      desc: Specify the stackable item that will fill in the container

@@ -1,16 +1,17 @@
 {
-    "id": "my_plugin",
+    "id": "signal_container",
     "version": "1.0.0",
-    "name": "My Plugin",
-    "description": "This description is a description to your plugin",
+    "name": "Signal Container",
+    "description": "Obtain container that could output specified container",
     "author": [
-        "You"
+        "Ra1ny_Yuki"
     ],
-    "link": "https://github.com/MCDReforged/PluginTemplate",
+    "link": "https://github.com/Lazy-Bing-Server/SingalContainer-MCDR",
     "dependencies": {
     },
 
     "resources": [
-        "lang"
+        "lang",
+        "LICENSE"
     ]
 }
