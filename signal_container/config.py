@@ -1,5 +1,5 @@
 from mcdreforged.api.all import *
-from typing import Dict, Any
+from typing import Dict, Any, Type, Self
 from threading import RLock
 
 from signal_container.container import Container
@@ -21,11 +21,24 @@ class Config(Serializable):
     permission: PermissionRequirements = PermissionRequirements.get_default()
 
     class __BaseConfig(Serializable):
-        container_item: str = "minecraft:barrel"
-        max_slots: int = 27
-        allow_overstack_under_15: bool = False
-        unstackable_fillings: str = "minecraft:shears"
-        stackable_fillings: str = "minecraft:iron_nugget"
+        # Do not add generic here or TypeError(xD)
+        container_item: str
+        max_slots: int
+        allow_overstack_under_15: bool
+        unstackable_fillings: str
+        stackable_fillings: str
+
+        __default = {
+            "container_item": "minecraft:barrel",
+            "max_slots": 27,
+            "allow_overstack_under_15": False,
+            "unstackable_fillings": "minecraft:shears",
+            "stackable_fillings": "minecraft:iron_nugget"
+        }
+
+        @classmethod
+        def get_default(cls) -> Self:
+            return cls.deserialize(cls.__default)
 
     global_config: __BaseConfig = __BaseConfig.get_default()
     preferences: Dict[str, __BaseConfig] = {}
@@ -73,7 +86,7 @@ class Config(Serializable):
         with self.__lock:
             if src.get_permission_level() < self.permission.set:
                 return False
-            target = self.preferences.get(src.player, self.__BaseConfig.get_default())
+            target = self.preferences.get(src.player, self.__BaseConfig())
             if not self.__set(target, key, value):
                 return False
             self.preferences[src.player] = target
@@ -83,4 +96,6 @@ class Config(Serializable):
     def get_target_container(self, player: str):
         with self.__lock:
             pref = self.preferences.get(player, self.global_config)
-            return Container(**pref.serialize())
+            full_pref = self.global_config.serialize()
+            full_pref.update(pref.serialize())
+            return Container(**full_pref)

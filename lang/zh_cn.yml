@@ -1,0 +1,53 @@
+signal_container:
+  help:
+    detailed: |
+      ------ {id} v{ver} ------
+      获取输出指定信号的容器
+      §7{pre}§r 显示该帮助信息
+      §7{pre} get§e <信号>§r 获取指定的容器
+      §7{pre} give§6 <玩家>§e <信号>§r 给别人发指定的容器
+      §7{pre} cfg list§r 列出配置项
+      §7{pre} cfg info §b<键> §r获取配置项详情
+      §7{pre} cfg set §b<键> §3<值>§r 为自己设置一个配置项
+      §7{pre} cfg set-global §b<键> §3<值>§r 设置一个全局配置项
+    mcdr: 获取输出指定信号的容器
+    suggest: 点击填入指令 §7{}§r
+
+  error:
+    requires_positive: 信号等级不可为负
+    not_a_player: 该指令仅可由玩家执行
+    perm_denied: 权限不足
+    invalid_item: 找不到该配置项
+
+  get:
+    obtained: 已发放指定的容器 (信号等级=§e{signal}§r) 给 §6{player}§r
+
+  set:
+    local: 已设定个人偏好设置 §b{k}§r 为 §3{v}§r
+    global: 已设定全局设置 §b{k}§r 为 §3{v}§r
+    failed: 设置 §b{k}§r 为 §3{v}§c 失败
+
+  list: "可用的配置项:"
+
+  info:
+    edit_local_hover: 修改个人偏好配置 {k}
+    edit_global_hover: 修改全局配置 {k}
+    local_value: "偏好配置值: §3{}§r [✎]"
+    global_value: "全局配置值: §3{}§r [✎]"
+    not_set: 未设定
+
+    container_item:
+      name: 容器物品 ID
+      desc: 指定发放给玩家的容器物品 ID
+    max_slots:
+      name: 最大格数
+      desc: 指定该容器拥有的格子数量
+    allow_overstack_under_15:
+      name: 允许在能量等级15以下使用过堆叠物品
+      desc: 启用以使获取的容器在任何条件下都可以用过堆叠的不可堆叠物品填充
+    unstackable_fillings:
+      name: 不可堆叠填充物
+      desc: 指定填充容器的不可堆叠填充物
+    stackable_fillings:
+      name: 可堆叠填充物
+      desc: 指定填充容器的可堆叠填充物

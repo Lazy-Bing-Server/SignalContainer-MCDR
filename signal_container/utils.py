@@ -13,8 +13,6 @@ psi = ServerInterface.psi()
 MessageText: type = Union[str, RTextBase]
 TRANSLATION_KEY_PREFIX = psi.get_self_metadata().id + '.'
 
-DEBUG = True
-
 
 # Utilities
 def rtr(
@@ -25,65 +23,7 @@ def rtr(
 ) -> RTextMCDRTranslation:
     if _sc_rtr_with_prefix and not translation_key.startswith(TRANSLATION_KEY_PREFIX):
         translation_key = f"{TRANSLATION_KEY_PREFIX}{translation_key}"
-    return RTextMCDRTranslation(translation_key, *args, **kwargs).set_translator(psi.tr)
-
-
-def debug(msg: Union[str, RTextBase]):
-    psi.logger.debug(msg, no_check=DEBUG)
-
-
-def ntr(
-    translation_key: str,
-    *args,
-    _mcdr_tr_language: Optional[str] = None,
-    _mcdr_tr_allow_failure: bool = True,
-    _sc_ntr_default_fallback: Optional[MessageText] = None,
-    _sc_ntr_log_error_message: bool = True,
-    **kwargs
-) -> MessageText:
-
-    try:
-        return psi.tr(
-            translation_key, *args,
-            _mcdr_tr_language=_mcdr_tr_language,
-            _mcdr_tr_allow_failure=False,
-            **kwargs
-        )
-    except (KeyError, ValueError):
-        fallback_language = psi.get_mcdr_language()
-        try:
-            if fallback_language == 'en_us':
-                raise KeyError(translation_key)
-            return psi.tr(
-                translation_key, *args, _mcdr_tr_language='en_us',
-                language='en_us', allow_failure=False, **kwargs
-            )
-        except (KeyError, ValueError):
-            languages = []
-            for item in (_mcdr_tr_language, fallback_language, 'en_us'):
-                if item not in languages:
-                    languages.append(item)
-            languages = ', '.join(languages)
-            if _mcdr_tr_allow_failure:
-                if _sc_ntr_log_error_message:
-                    psi.logger.error(f'Error translate text "{translation_key}" to language {languages} 1')
-                if _sc_ntr_default_fallback is None:
-                    return translation_key
-                return _sc_ntr_default_fallback
-            else:
-                raise KeyError(f'Translation key "{translation_key}" not found with language {languages}')
-
-
-def dim_tr(key: str, *args, lang: Optional[str] = None, allow_failure: bool = True, **kwargs):
-    try:
-        return ntr(key, *args, lang=lang, _mcdr_tr_allow_failure=False, **kwargs)
-    except Exception as exc:
-        if not allow_failure:
-            raise exc
-        if key.startswith('where_is.dim.'):
-            return key[13:]
-        else:
-            return key
+    return RTextMCDRTranslation(translation_key, *args, **kwargs)
 
 
 def to_camel_case(string: str, divider: str = ' ', upper: bool = True) -> str:

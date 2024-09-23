@@ -58,7 +58,7 @@ class Container:
                     InventoryProperty(id=self.__unstackable_item, Slot=len(slot_list), Count=64)
                 )
                 unstackable_stack -= 1
-            elif (unstackable_item >= self.__slots and stackable_item > 0) or (unstackable_item > 0 and self.__allow_overstack_under_15):
+            elif (unstackable_item == self.__slots and stackable_item > 0) or unstackable_item > self.__slots or (unstackable_item > 0 and self.__allow_overstack_under_15):
                 slot_list.append(
                     InventoryProperty(id=self.__unstackable_item, Slot=len(slot_list), Count=unstackable_item)
                 )

@@ -4,7 +4,7 @@ from mcdreforged.api.all import *
 from typing import Optional, List, Any
 
 from signal_container.config import Config
-from signal_container.utils import ntr, rtr, named_thread, DEBUG
+from signal_container.utils import rtr, named_thread
 from signal_container.generic import MessageText
 
 
@@ -51,7 +51,6 @@ def help_msg(source: CommandSource):
 @named_thread
 def get_signal_container(source: PlayerCommandSource, signal: int):
     container = config.get_target_container(source.player)
-    psi.logger.info(container.get_item_stack(signal))
     command = container.get_give_command(source.player, signal)
     psi.execute(command)
     source.reply(rtr("get.obtained", signal=signal, player=source.player))
@@ -83,14 +82,15 @@ def set_global_config(source: CommandSource, key: str, value: Any):
 def info_config(source: CommandSource, key: str):
     source.reply(rtr(f'info.{key}.name').set_styles(RStyle.bold).set_color(RColor.aqua) + f"(§7{key}§r)")
     source.reply(rtr(f'info.{key}.desc'))
-    if isinstance(source, PlayerCommandSource) and config.preferences.get(source.player):
-        source.reply(
-            rtr('info.local_value', str(getattr(config.preferences.get(source.player), key))).set_hover_text(
-                "Edit preferred config item {}"
-            ).set_click_event(
-                RAction.suggest_command, f"{config.prefix} cfg set {key} "
+    if isinstance(source, PlayerCommandSource):
+        with source.preferred_language_context():
+            source.reply(
+                rtr('info.local_value', str(getattr(config.preferences.get(source.player), key, rtr('info.not_set')))).set_hover_text(
+                    "Edit preferred config item {}"
+                ).set_click_event(
+                    RAction.suggest_command, f"{config.prefix} cfg set {key} "
+                )
             )
-        )
     gl_value = rtr('info.global_value', str(getattr(config.global_config, key)))
     if source.has_permission(config.permission.set_global):
         gl_value.set_hover_text("Edit global config item {}").set_click_event(
@@ -153,7 +153,11 @@ def build_command():
     )
     root_builder.literal('set-global', permed_literal)
     root_builder.command(f"{prefix} cfg info <key>", lambda src, ctx: info_config(src, ctx['key']))
-    root_builder.arg('key', QuotableText).requires(lambda src, ctx: ctx['key'] in config.get_key_lists())
+    root_builder.arg('key', QuotableText).requires(
+        lambda src, ctx: ctx['key'] in config.get_key_lists(), lambda: rtr('error.invalid_item')
+    ).suggests(
+        lambda: config.get_key_lists()
+    )
     root_builder.arg('value', QuotableText)
     root_builder.command(f"{prefix} cfg list", list_config)
     root_builder.register(psi)

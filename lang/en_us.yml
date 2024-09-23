@@ -8,31 +8,33 @@ signal_container:
       §7{pre} give§6 <player>§e <signal>§r Give some specified container
       §7{pre} cfg list§r List config items
       §7{pre} cfg info §b<key> §rGet config item info
-      §7{pre} cfg set §b<key> §4<value>§r Set config items for yourself
-      §7{pre} cfg set-global §b<key> §4<value>§r Set config items globally
+      §7{pre} cfg set §b<key> §3<value>§r Set config items for yourself
+      §7{pre} cfg set-global §b<key> §3<value>§r Set config items globally
     mcdr: Obtain container that output specified signal
     suggest: Click to fill command §7{}§r
 
   error:
-    requires_positive: Signal must be a positive value
+    requires_positive: Signal can't be a negative value
     not_a_player: This command can only be executed by player
     perm_denied: Permission denied
+    invalid_item: Config item not found
 
   get:
-    obtained: Specified container (signal=§e{signal}§r) given to {player}
+    obtained: Specified container (signal=§e{signal}§r) given to §6{player}§r
 
   set:
-    local: Set preference item §b{k}§r to §4{v}§r
-    global: Set global config item §b{k}§r to §4{v}§r
-    failed: Set item §b{k}§r to §4{v}§c failed
+    local: Set preference item §b{k}§r to §3{v}§r
+    global: Set global config item §b{k}§r to §3{v}§r
+    failed: Set item §b{k}§r to §3{v}§c failed
 
   list: "Available configuration items:"
 
   info:
     edit_local_hover: Edit personal preference item {k}
     edit_global_hover: Edit global config item {k}
-    local_value: "Prefered config value: §4{}§r [✎]"
-    global_value: "Global config value: §4{}§r [✎]"
+    local_value: "Prefered config value: §3{}§r [✎]"
+    global_value: "Global config value: §3{}§r [✎]"
+    not_set: No value set
 
     container_item:
       name: Container item ID
@@ -41,7 +43,7 @@ signal_container:
       name: Maximum slots
       desc: Specify the slots the specified container have
     allow_overstack_under_15:
-      name: Allow overstack item under signal levl 15
+      name: Allow overstack item under signal level 15
       desc: Enable this to make container filled with overstacked unstackable items in any situation
     unstackable_fillings:
       name: Unstackable fillings
