@@ -1,5 +1,5 @@
 from mcdreforged.api.all import *
-from typing import Dict, Any, Type, Self
+from typing import Dict, Any
 from threading import RLock
 
 from signal_container.container import Container
@@ -37,7 +37,7 @@ class Config(Serializable):
         }
 
         @classmethod
-        def get_default(cls) -> Self:
+        def get_default(cls):
             return cls.deserialize(cls.__default)
 
     global_config: __BaseConfig = __BaseConfig.get_default()
